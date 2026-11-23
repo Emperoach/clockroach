@@ -68,7 +68,7 @@ class Profile(models.Model):
     lga = models.ForeignKey(LGA, on_delete=models.PROTECT, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.user} ({self.get_role_display()})"
+        return f"{self.user.get_full_name() or self.user} ({self.get_role_display()})"
 
 
 class AbsenceReason(models.Model):
@@ -116,6 +116,17 @@ class AppendOnly(models.Model):
         raise PermissionError(f"{type(self).__name__} records are locked")
 
 
+FLAG_LABELS = {
+    "late": "Sent after the deadline",
+    "off_site": "Sent from outside the school",
+    "no_gps": "No location on the register",
+    "no_boundary": "School boundary not yet mapped",
+    "clock_skew": "Phone clock was wrong",
+    "late_sync": "Reached the server days later",
+    "date_mismatch": "Date does not match capture time",
+}
+
+
 class Register(AppendOnly):
     # The phone creates the id, so a register re-sent after a dropped connection is not saved twice.
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
@@ -138,6 +149,9 @@ class Register(AppendOnly):
     def __str__(self):
         return f"{self.school} {self.date}"
 
+    def flag_labels(self):
+        return [FLAG_LABELS.get(f, f) for f in self.flags]
+
 
 class RegisterEntry(AppendOnly):
     register = models.ForeignKey(Register, on_delete=models.PROTECT, related_name="entries")
@@ -145,6 +159,9 @@ class RegisterEntry(AppendOnly):
     present = models.BooleanField()
     reason = models.ForeignKey(AbsenceReason, on_delete=models.PROTECT, null=True, blank=True)
     note = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name_plural = "register entries"
 
     def effective(self):
         """The value in force: the latest correction, or the original entry."""

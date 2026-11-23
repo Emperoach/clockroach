@@ -89,7 +89,9 @@ class SubmitTests(Base):
 
     def test_late_and_off_site(self):
         self.submit(self.payload(at(9, 30), lat=9.95, lng=8.95))
-        self.assertEqual(sorted(Register.objects.get().flags), ["late", "off_site"])
+        reg = Register.objects.get()
+        self.assertEqual(sorted(reg.flags), ["late", "off_site"])
+        self.assertEqual(sorted(reg.flag_labels()), ["Sent after the deadline", "Sent from outside the school"])
 
     def test_offline_capture_keeps_its_morning_time(self):
         body = self.payload(at(7, 30), device_now=at(13, 0))

@@ -9,7 +9,7 @@
 {% else %}
   <p>Submitted by {{ register.submitted_by.get_full_name|default:register.submitted_by }}{% if register.is_alternate %} (as alternate){% endif %}.
   Captured {{ register.captured_at|time:"H:i" }}, received {{ register.received_at|time:"H:i" }}{% if register.captured_offline %}, captured offline{% endif %}.
-  {% if register.flags %}<br>Flags: <strong>{{ register.flags|join:", " }}</strong>{% endif %}</p>
+  {% if register.flags %}<br>Flags: <strong>{{ register.flag_labels|join:"; " }}</strong>{% endif %}</p>
   <table>
     <thead><tr><th>Teacher</th><th>Attendance</th><th>Reason</th><th>History</th>{% if can_correct %}<th>Correct</th>{% endif %}</tr></thead>
     <tbody>

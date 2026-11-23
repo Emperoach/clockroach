@@ -14,7 +14,7 @@
       <td>{{ school.ward.lga }}</td><td>{{ school.ward.name }}</td>
       <td><a href="{% url 'school_day' school.id day|date:'Y-m-d' %}">{{ school.name }}</a></td>
       <td><span class="badge s-{{ status }}">{{ label }}</span></td>
-      <td>{{ register.flags|join:", " }}</td>
+      <td>{{ register.flag_labels|join:"; " }}</td>
     </tr>
   {% empty %}
     <tr><td colspan="5">No schools in your area.</td></tr>
