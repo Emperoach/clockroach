@@ -1,0 +1,9 @@
+{
+  "name": "SUBEB Daily Register",
+  "short_name": "Register",
+  "start_url": "/app/",
+  "scope": "/app/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1d4d3a"
+}

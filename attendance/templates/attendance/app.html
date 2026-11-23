@@ -1,0 +1,16 @@
+{% extends "attendance/base.html" %}
+{% load static %}
+{% block title %}Daily register{% endblock %}
+{% block head %}<link rel="manifest" href="{% static 'attendance/manifest.json' %}"><meta name="theme-color" content="#1d4d3a">{% endblock %}
+{% block content %}
+<p id="status" role="status"></p>
+<h1 id="school">Daily register</h1>
+<p id="today"></p>
+<form id="register" class="stack" hidden>
+  <div id="teachers"></div>
+  <button id="submit">Submit register</button>
+  <p class="small">Once submitted, the register is locked. Only your Ward Supervisor can correct it.</p>
+</form>
+<section id="queue"></section>
+{% endblock %}
+{% block scripts %}<script src="{% static 'attendance/app.js' %}"></script>{% endblock %}

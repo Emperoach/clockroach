@@ -1,0 +1,30 @@
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; font: 16px/1.5 system-ui, sans-serif; color: #1c1c1c; }
+main { padding: 1rem; max-width: 70rem; margin: auto; }
+.bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .6rem 1rem; background: #1d4d3a; color: #fff; }
+.bar form { margin: 0; }
+button { font: inherit; padding: .6rem 1rem; border: 0; border-radius: 6px; background: #1d4d3a; color: #fff; cursor: pointer; }
+button:disabled { opacity: .5; }
+.bar button { background: #fff; color: #1d4d3a; padding: .3rem .7rem; }
+input, select, textarea { font: inherit; padding: .5rem; width: 100%; border: 1px solid #888; border-radius: 6px; }
+input[type=radio] { width: auto; }
+.stack { display: grid; gap: .8rem; max-width: 32rem; }
+.stack label, .absent label { display: grid; gap: .2rem; }
+.inline { display: flex; gap: .5rem; align-items: end; }
+.inline input { width: auto; }
+fieldset.teacher { border: 1px solid #ccc; border-radius: 8px; padding: .6rem .8rem; }
+fieldset.teacher > label { display: inline-flex; gap: .3rem; margin-right: 1.5rem; padding: .4rem 0; }
+.absent { display: grid; gap: .5rem; margin-top: .4rem; }
+.error { color: #a40000; font-weight: 600; }
+.small { font-size: .85rem; color: #555; }
+table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+th, td { text-align: left; padding: .45rem; border-bottom: 1px solid #ddd; vertical-align: top; }
+.summary { display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; list-style: none; }
+.summary li, .badge { padding: .25rem .7rem; border-radius: 999px; font-weight: 600; color: #fff; }
+/* One colour scale for every level. Text labels always sit with the colour. */
+.s-on_time { background: #1f7a3f; }
+.s-late { background: #a86200; }
+.s-flagged { background: #6b3fa0; }
+.s-missing { background: #b3261e; }
+.s-closed { background: #5f6368; }

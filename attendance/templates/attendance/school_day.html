@@ -1,0 +1,39 @@
+{% extends "attendance/base.html" %}
+{% block title %}{{ school }} {{ day }}{% endblock %}
+{% block content %}
+<p><a href="{% url 'dashboard' %}?date={{ day|date:'Y-m-d' }}">← Dashboard</a></p>
+<h1>{{ school }} — {{ day|date:"j F Y" }}</h1>
+{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+{% if not register %}
+  <p>No register has been submitted.</p>
+{% else %}
+  <p>Submitted by {{ register.submitted_by.get_full_name|default:register.submitted_by }}{% if register.is_alternate %} (as alternate){% endif %}.
+  Captured {{ register.captured_at|time:"H:i" }}, received {{ register.received_at|time:"H:i" }}{% if register.captured_offline %}, captured offline{% endif %}.
+  {% if register.flags %}<br>Flags: <strong>{{ register.flags|join:", " }}</strong>{% endif %}</p>
+  <table>
+    <thead><tr><th>Teacher</th><th>Attendance</th><th>Reason</th><th>History</th>{% if can_correct %}<th>Correct</th>{% endif %}</tr></thead>
+    <tbody>
+    {% for row in entries %}
+      <tr>
+        <td>{{ row.entry.teacher }}</td>
+        <td>{{ row.present|yesno:"Present,Absent" }}</td>
+        <td>{{ row.reason|default:"" }}{% if row.note %} — {{ row.note }}{% endif %}</td>
+        <td>{% for c in row.entry.corrections.all %}<div class="small">{{ c.at|date:"j M H:i" }} {{ c.officer.get_full_name|default:c.officer }}: {{ c.old_present|yesno:"Present,Absent" }} → {{ c.new_present|yesno:"Present,Absent" }}. “{{ c.why }}”</div>{% empty %}Original{% endfor %}</td>
+        {% if can_correct %}
+        <td>
+          <details><summary>Correct</summary>
+          <form method="post" action="{% url 'correct' row.entry.id %}" class="stack">{% csrf_token %}
+            <label>Attendance <select name="present"><option value="1">Present</option><option value="0">Absent</option></select></label>
+            <label>Reason <select name="reason"><option value="">—</option>{% for r in reasons %}<option value="{{ r.id }}">{{ r }}</option>{% endfor %}</select></label>
+            <label>Note <input name="note"></label>
+            <label>Why are you correcting this? <textarea name="why" required></textarea></label>
+            <button>Save correction</button>
+          </form></details>
+        </td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endif %}
+{% endblock %}
